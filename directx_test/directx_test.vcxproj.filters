@@ -21,9 +21,15 @@
     <ClCompile Include="src\WinMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\windows_api.h">
+    <ClInclude Include="include\windows_api.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
