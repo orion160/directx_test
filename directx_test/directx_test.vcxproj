@@ -83,6 +83,9 @@
   <ItemGroup>
     <ClCompile Include="src\WinMain.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\windows_api.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
