@@ -1,5 +1,7 @@
 #include "windows_api.h"
 
+#include <d3d11.h>
+
 LRESULT CALLBACK window_proc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     switch (uMsg)
@@ -34,6 +36,15 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
     HWND hwnd = CreateWindowEx(0, class_name, L"test", WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, 200, 200, 640, 480,
                                nullptr, nullptr, hInstance, nullptr);
+
+    ID3D11Device* d3d11_device;
+    D3D_FEATURE_LEVEL feature_level;
+    ID3D11DeviceContext* immediate_context;
+
+    D3D_FEATURE_LEVEL feature_levels[] = {D3D_FEATURE_LEVEL_11_1};
+
+    HRESULT res = D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, feature_levels, 1, D3D11_SDK_VERSION,
+                                    &d3d11_device, &feature_level, &immediate_context);
 
     ShowWindow(hwnd, SW_SHOW);
 
