@@ -45,8 +45,8 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
     D3D_FEATURE_LEVEL feature_levels[] = {D3D_FEATURE_LEVEL_11_1};
 
-    HRESULT res_device = D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, feature_levels, 1, D3D11_SDK_VERSION,
-                                    &d3d11_device, &feature_level, &immediate_context);
+    HRESULT res_device = D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, feature_levels, 1,
+                                           D3D11_SDK_VERSION, &d3d11_device, &feature_level, &immediate_context);
 
     IDXGIDevice* dxgi_device;
     IDXGIAdapter* dxgi_adapter;
@@ -54,7 +54,6 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
     d3d11_device->QueryInterface(__uuidof(IDXGIDevice), reinterpret_cast<void**>(&dxgi_device));
     dxgi_device->GetParent(__uuidof(IDXGIAdapter), reinterpret_cast<void**>(&dxgi_adapter));
     dxgi_adapter->GetParent(__uuidof(IDXGIFactory), reinterpret_cast<void**>(&dxgi_factory));
-
 
     IDXGISwapChain* swap_chain;
     DXGI_SWAP_CHAIN_DESC swapchain_desriptor = {0};
@@ -71,7 +70,11 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
     swapchain_desriptor.Windowed = TRUE;
     HRESULT res_swap = dxgi_factory->CreateSwapChain(d3d11_device, &swapchain_desriptor, &swap_chain);
 
-    
+    ID3D11Texture2D* buffer;
+    HRESULT res_buffer = swap_chain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&buffer));
+    ID3D11RenderTargetView* render_target_view;
+    d3d11_device->CreateRenderTargetView(buffer, nullptr, &render_target_view);
+    buffer->Release();
 
     ShowWindow(hwnd, SW_SHOW);
 
@@ -79,6 +82,10 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
     BOOL msg_result;
     while ((msg_result = GetMessage(&msg, nullptr, 0, 0)) != 0)
     {
+        float rgba_color[] = {1.0f, 0.0f, 0.0f, 0.0f};
+        immediate_context->ClearRenderTargetView(render_target_view, rgba_color);
+        swap_chain->Present(TRUE, 0);
+
         if (msg_result == -1)
         {
             return -1;
