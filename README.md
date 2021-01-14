@@ -1,6 +1,6 @@
 # directx_test
 
 # TODO
-- [ ] window initialization
-- [ ] D3D device initialization
-- [ ] usage
+- [x] window initialization
+- [x] D3D device initialization
+- [x] usage
